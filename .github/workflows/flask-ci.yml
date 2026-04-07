@@ -10,7 +10,7 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - name: Build image
-        run: docker build -t daminow/myflaskapp:latest .
+        run: docker build -t tdaminov/myflaskapp:latest .
 
   test:
     runs-on: ubuntu-latest
@@ -19,8 +19,8 @@ jobs:
       - uses: actions/checkout@v3
       - name: Build and test
         run: |
-          docker build -t daminow/myflaskapp:latest .
-          docker run -d -p 5000:5000 --name testflaskapp daminow/myflaskapp:latest
+          docker build -t tdaminov/myflaskapp:latest .
+          docker run -d -p 5000:5000 --name testflaskapp tdaminov/myflaskapp:latest
           sleep 5
           if curl -s http://127.0.0.1:5000 | grep "Hello from Flask app"; then
             echo "Test passed"
@@ -38,9 +38,9 @@ jobs:
       - uses: actions/checkout@v3
       - name: Login and push to DockerHub
         run: |
-          echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u "daminow" --password-stdin
-          docker build -t daminow/myflaskapp:latest .
-          docker push daminow/myflaskapp:latest
+          echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u "tdaminov" --password-stdin
+          docker build -t tdaminov/myflaskapp:latest .
+          docker push tdaminov/myflaskapp:latest
 
   deploy:
     runs-on: ubuntu-latest
@@ -49,6 +49,6 @@ jobs:
       - uses: actions/checkout@v3
       - name: Deploy
         run: |
-          docker pull daminow/myflaskapp:latest
-          docker run -d -p 5000:5000 --name flaskapp daminow/myflaskapp:latest
+          docker pull tdaminov/myflaskapp:latest
+          docker run -d -p 5000:5000 --name flaskapp tdaminov/myflaskapp:latest
           echo "Deployed."
